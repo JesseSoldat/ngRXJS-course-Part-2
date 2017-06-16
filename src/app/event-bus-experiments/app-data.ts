@@ -1,4 +1,4 @@
-import { Observer } from './event-bus';
+import { Lesson } from './../shared/model/lesson';
 import * as _ from 'lodash';
 
 export const LESSONS_LIST_AVAILABLE = 'NEW_LIST_AVAILABLE';
@@ -26,4 +26,18 @@ class SubjectImplementation implements Subject {
     unsubscribe(obs: Observer) {
         _.remove(this.observers, el => el === obs);
     }
+}
+const lessonListSubject = new SubjectImplementation();
+
+export let lessonsList$: Observable = {
+    subscribe: obs => lessonListSubject.subscribe(obs),
+    unsubscribe: obs => lessonListSubject.unsubscribe(obs)
+};
+
+let lessons: Lesson[] = [];
+
+export function initializeLessonsList(newList: Lesson[]) {
+    //we dont' want to have ref to avoid this being mutated from outside of the component
+    lessons = _.cloneDeep(newList);
+    lessonListSubject.next(lessons);
 }
