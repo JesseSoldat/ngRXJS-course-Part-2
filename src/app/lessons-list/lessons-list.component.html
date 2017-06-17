@@ -4,7 +4,8 @@
     <tr *ngFor="let lesson of lessons"
     (click)="select(lesson)">
       <td class="viewed">
-        <input type="checkbox" (click)="toggleLessonViewed(lesson)">
+        <input type="checkbox" (click)="toggleLessonViewed(lesson)"
+        [checked]="lesson.completed">
       </td>
       <td class="lesson-title"
         [ngClass]="{'lesson-viewed': lesson.completed}"

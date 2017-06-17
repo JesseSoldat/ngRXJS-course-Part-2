@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as _ from 'lodash';
 import { Lesson } from './../shared/model/lesson';
-import { Observer, lessonsList$ } from './../event-bus-experiments/app-data';
+import { Observer, store } from './../event-bus-experiments/app-data';
 
 @Component({
   selector: 'lessons-list',
@@ -13,27 +13,25 @@ export class LessonsListComponent implements OnInit, Observer {
 
   constructor() {
     console.log('lesson list is registered as a listener ');
-    lessonsList$.subscribe(this);
+    store.subscribe(this);
    }
 
   ngOnInit() {          
   }
 
-
-
   next(data: Lesson[]) {
     console.log('lessons list component received data');
-    this.lessons = data.slice(0);
-    
+    this.lessons = data;  
   }
 
   toggleLessonViewed(lesson: Lesson) {
-    lesson.completed = !lesson.completed;
+    store.toggleLessonViewed(lesson);
   }
 
   delete(deleted: Lesson) {
-    _.remove(this.lessons, lesson => lesson.id === deleted.id)
+    store.deleteLesson(deleted);
   }
+
 
   select() {
   }
